@@ -3,6 +3,7 @@ import App from '../App';
 import { RequireAuth } from '../contexts/auth.context';
 import { HomePage } from './home/homePage';
 import { LoginPage } from './login/loginPage';
+import { RegisterPage } from './register/RegisterPage';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <LoginPage />,
+      },
+      {
+        path: 'register',
+        element: <RegisterPage />,
       },
     ],
   },
