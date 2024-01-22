@@ -1,6 +1,6 @@
-import Button from '../../components/Button';
-import InputText from '../../components/InputText';
-import { Link } from '../../components/Link';
+import Button from '../../../components/Button';
+import InputText from '../../../components/InputText';
+import { Link } from '../../../components/Link';
 
 export const RegisterPage = (): JSX.Element => {
   return (

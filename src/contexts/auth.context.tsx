@@ -4,12 +4,13 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { STORAGE_CONST } from '../constants/storage.constants';
 import { useAPIAuth } from '../hooks/api/useAPIAuth';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import { UserTokenData } from '../models/auth/token.model';
 import { UserInfoData } from '../models/auth/user.model';
-import { CookieManager } from '../services/cookie.service';
 
 export interface AuthContextData {
   signed: boolean;
+  showWelcome: boolean;
   token: UserTokenData | null;
   user: UserInfoData | null;
   loading: boolean;
@@ -26,18 +27,20 @@ export interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Element => {
   const apiAuth = useAPIAuth();
 
-  const [userToken, setUserToken] = useState<UserTokenData | null>(null);
+  const [userToken, setUserToken] = useLocalStorage<UserTokenData>(STORAGE_CONST.token, null);
   const [userInfo, setUserInfo] = useState<UserInfoData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(true);
 
   useEffect(() => {
     const loadStorageData = async () => {
-      const cookieToken = getTokenCookie();
-      if (cookieToken) {
-        const userInfo = await apiAuth.userInfo(cookieToken);
+      setLoading(true);
+      if (userToken) {
+        const userInfo = await apiAuth.userInfo(userToken);
         setUserInfo(userInfo);
       }
       setLoading(false);
+      setShowWelcome(false);
     };
     loadStorageData();
   }, []);
@@ -59,10 +62,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
     setLoading(true);
     const resToken = await apiAuth.signIn(email, password);
     if (resToken) {
-      setUserToken(resToken);
       console.log('Token: ', resToken);
-      CookieManager().setCookie(STORAGE_CONST.token, JSON.stringify(resToken), resToken.expire_in);
       if (resToken) {
+        setUserToken(resToken);
         const userInfo = await apiAuth.userInfo(resToken);
         setUserInfo(userInfo);
       }
@@ -75,21 +77,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
     setLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setUserToken(null);
-    CookieManager().deleteCookie(STORAGE_CONST.token);
     setLoading(false);
-  };
-
-  const getTokenCookie = (): UserTokenData | null => {
-    const token = CookieManager().getCookie(STORAGE_CONST.token);
-    if (token) {
-      return JSON.parse(token) as UserTokenData;
-    }
-    return null;
   };
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!userToken, token: userToken, user: userInfo, loading, signIn, signOut }}>
+      value={{
+        signed: !!userToken,
+        token: userToken,
+        user: userInfo,
+        loading,
+        signIn,
+        signOut,
+        showWelcome,
+      }}>
       {props.children}
     </AuthContext.Provider>
   );

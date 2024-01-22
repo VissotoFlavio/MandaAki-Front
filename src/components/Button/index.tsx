@@ -39,19 +39,27 @@ export interface ButtonProps
   icon?: ElementType;
 }
 
-const Button: FC<ButtonProps> = (props): JSX.Element => {
+const Button: FC<ButtonProps> = ({
+  loading,
+  size,
+  color,
+  className,
+  label,
+  ...props
+}: ButtonProps): JSX.Element => {
   const randomId = useRandomString(10);
   return (
     <button
       id={randomId}
       type="button"
+      data-loading={loading}
       {...props}
       className={ButtonVariantsStyle({
-        size: props.size,
-        color: props.color,
-        className: props.className,
+        size,
+        color,
+        className,
       })}>
-      {props.loading ? <Icons.Loading /> : props.label}
+      {loading ? <Icons.Loading /> : label}
     </button>
   );
 };

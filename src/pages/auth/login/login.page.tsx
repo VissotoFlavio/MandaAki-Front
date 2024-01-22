@@ -2,15 +2,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigation } from 'react-router-dom';
-import Button from '../../components/Button';
-import Checkbox from '../../components/Checkbox';
-import InputText from '../../components/InputText';
-import { Link } from '../../components/Link';
+import Button from '../../../components/Button';
+import Checkbox from '../../../components/Checkbox';
+import InputText from '../../../components/InputText';
+import { Link } from '../../../components/Link';
+import { useAuth } from '../../../contexts/auth.context';
 import { LoginFormSchema, LoginFormType } from './logins.schema';
 
 export const LoginPage = (): JSX.Element => {
+  const authContext = useAuth();
   const navigation = useNavigation();
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const loginForm = useForm<LoginFormType>({
     resolver: zodResolver(LoginFormSchema),
@@ -23,7 +26,10 @@ export const LoginPage = (): JSX.Element => {
 
   const handleLogin = async (data: LoginFormType) => {
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    /** TODO: Realizar tratativa do login com sucesso ou erro */
+    await authContext.signIn(data.email, data.password);
+
     console.log(data);
     setIsLoading(false);
   };

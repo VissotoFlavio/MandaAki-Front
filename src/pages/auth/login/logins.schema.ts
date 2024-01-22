@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ERROR_SCHEMA_FIELDS } from '../../constants/error-schema.constants';
+import { ERROR_SCHEMA_FIELDS } from '../../../constants/error-schema.constants';
 
 const minPass = 6;
 
