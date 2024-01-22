@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import { RequireAuth } from '../contexts/auth.context';
 import { HomePage } from './home/homePage';
-import { LoginPage } from './login/loginPage';
+import { LoginPage } from './login/login.page';
 import { RegisterPage } from './register/RegisterPage';
 
 const router = createBrowserRouter([
