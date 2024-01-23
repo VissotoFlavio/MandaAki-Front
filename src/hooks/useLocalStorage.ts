@@ -42,6 +42,8 @@ export const useLocalStorage = <T>(key: string, initialValue: T | null): StoredV
           error,
         );
       }
+    } else {
+      localStorage.removeItem(key);
     }
   }, [key, value]);
 
