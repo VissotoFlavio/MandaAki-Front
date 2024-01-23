@@ -1,6 +1,7 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState } from 'react';
+import { Backdrop } from '../Backdrop/Backdrop';
 import Content from '../Content';
-import Navbar from '../Navbar';
+import { Navbar } from '../Navbar/Navbar';
 import Sidebar from '../Sidebar/Sidebar';
 
 export interface ContainerProps {
@@ -8,11 +9,19 @@ export interface ContainerProps {
 }
 
 const Container: FC<ContainerProps> = (props): JSX.Element => {
+  const [openMenu, SetOpenMenu] = useState(false);
+
+  const handleToggleMenu = () => {
+    SetOpenMenu((prevValue) => !prevValue);
+  };
+
   return (
     <>
-      <Navbar />
-      <Sidebar />
+      <Navbar OnClickMenu={handleToggleMenu} />
+      <Sidebar showMenu={openMenu} />
       <Content>{props.children}</Content>
+      {}
+      <Backdrop show={openMenu} onClick={handleToggleMenu} />
     </>
   );
 };

@@ -90,7 +90,9 @@ export const LoginPage = (): JSX.Element => {
                     {...loginForm.register('rememberpass', { required: true })}
                     label="Lembrar"
                   />
-                  <Link label="Esqueceu a senha?" href="#" />
+                  <Link href="/recover-password" className="text-sm font-light text-gray-500">
+                    Esqueceu a senha?
+                  </Link>
                 </div>
                 <Button
                   label="Acessar"
@@ -100,7 +102,7 @@ export const LoginPage = (): JSX.Element => {
                   onClick={loginForm.handleSubmit(handleLogin)}
                 />
                 <p className="text-sm font-light text-gray-500">
-                  Não tem conta? <Link label="Cadastre-se" href="/register" />
+                  Não tem conta? <Link href="/register">Cadastre-se</Link>
                 </p>
               </div>
             </FormProvider>
