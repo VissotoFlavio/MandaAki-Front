@@ -1,9 +1,46 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
+import { VariantProps, tv } from 'tailwind-variants';
 
-const LoadingIcon = (): ReactNode => {
+const LoadingIconVariantsStyle = tv({
+  base: 'animate-spin',
+  variants: {
+    color: {
+      default: 'text-white',
+      black: 'text-black',
+      gray: 'text-gray-500',
+    },
+    size: {
+      default: 'h-5 w-5',
+      xs: 'h-3 w-3',
+      sm: 'h-4 w-4',
+      lg: 'h-7 w-7',
+      xl: 'h-10 w-10',
+    },
+  },
+  defaultVariants: {
+    size: 'default',
+    color: 'default',
+  },
+});
+
+export interface LoadingIconProps
+  extends Omit<React.SVGProps<SVGSVGElement>, 'color'>,
+    VariantProps<typeof LoadingIconVariantsStyle> {}
+
+const LoadingIcon: FC<LoadingIconProps> = ({
+  size,
+  color,
+  className,
+  ...props
+}: LoadingIconProps): ReactNode => {
   return (
     <svg
-      className="animate-spin h-5 w-5 text-white"
+      className={LoadingIconVariantsStyle({
+        size,
+        color,
+        className,
+      })}
+      {...props}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24">

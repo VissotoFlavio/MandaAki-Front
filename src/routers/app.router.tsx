@@ -1,14 +1,24 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { HomePage } from '../pages/app/home/homePage';
+import { App } from '../App';
+import { HomePage } from '../pages/app/home/home.page';
+import { LogoutPage } from '../pages/app/logout/logout.page';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />,
+    element: <App />,
     children: [
+      {
+        path: '/',
+        element: <HomePage />,
+      },
       {
         path: '/home',
         element: <HomePage />,
+      },
+      {
+        path: '/logout',
+        element: <LogoutPage />,
       },
     ],
   },

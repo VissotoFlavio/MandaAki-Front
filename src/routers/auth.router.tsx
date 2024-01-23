@@ -1,13 +1,14 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import App from '../App';
+import { Auth } from '../Auth';
 import { WelcomePage } from '../pages/auth/Welcome/WelcomePage';
 import { LoginPage } from '../pages/auth/login/login.page';
+import { RecoverPassword } from '../pages/auth/recover-password/RecoverPassword';
 import { RegisterPage } from '../pages/auth/register/RegisterPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <Auth />,
     children: [
       {
         path: '/',
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/recover-password',
-        element: <RegisterPage />,
+        element: <RecoverPassword />,
       },
     ],
   },
