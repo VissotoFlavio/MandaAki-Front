@@ -7,11 +7,13 @@ import Checkbox from '../../../components/Checkbox';
 import InputText from '../../../components/InputText';
 import { Link } from '../../../components/Link';
 import { useAuth } from '../../../contexts/auth.context';
+import { useToast } from '../../../contexts/toast.context';
 import { LoginFormSchema, LoginFormType } from './logins.schema';
 
 export const LoginPage = (): JSX.Element => {
   const authContext = useAuth();
   const navigation = useNavigation();
+  const toast = useToast();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -31,6 +33,11 @@ export const LoginPage = (): JSX.Element => {
     const result = await authContext.signIn(data.email, data.password);
 
     if (result.error) {
+      toast.open({
+        message: result.error.message,
+        icon: 'error',
+        timeout: 5000000,
+      });
     }
 
     setIsLoading(false);

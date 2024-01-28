@@ -65,7 +65,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
     const resToken = await apiAuth.signIn(email, password);
 
     if (resToken) {
-      console.log('Token: ', resToken);
       if (resToken && resToken.success) {
         setUserToken(resToken.success);
         const userInfo = await apiAuth.userInfo(resToken.success);
