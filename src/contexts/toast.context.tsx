@@ -41,7 +41,7 @@ export const ToastProvider = ({ children }: { children: JSX.Element }) => {
     <ToastContext.Provider value={contextValue}>
       {children}
       {createPortal(
-        <div className="z-9999 fixed bottom-0 left-1/2 mx-auto my-0 w-auto -translate-x-1/2 space-y-2">
+        <div className="z-9999 fixed bottom-2 left-1/2 mx-auto my-0 w-auto -translate-x-1/2 space-y-2">
           {toasts.map((x: ToastPropsProvider) => (
             <Toast
               key={x.id}

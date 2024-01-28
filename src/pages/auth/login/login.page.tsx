@@ -35,7 +35,17 @@ export const LoginPage = (): JSX.Element => {
     if (result.error) {
       toast.open({
         message: result.error.message,
+        icon: 'success',
+        timeout: 5000000,
+      });
+      toast.open({
+        message: result.error.message,
         icon: 'error',
+        timeout: 5000000,
+      });
+      toast.open({
+        message: result.error.message,
+        icon: 'alert',
         timeout: 5000000,
       });
     }
