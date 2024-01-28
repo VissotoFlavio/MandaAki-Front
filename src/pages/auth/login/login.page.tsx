@@ -19,7 +19,7 @@ export const LoginPage = (): JSX.Element => {
     resolver: zodResolver(LoginFormSchema),
     values: {
       email: 'vissoto_flavio@hotmail.com',
-      password: 'abc123',
+      password: '123456a',
       rememberpass: true,
     },
   });
@@ -28,9 +28,11 @@ export const LoginPage = (): JSX.Element => {
     setIsLoading(true);
 
     /** TODO: Realizar tratativa do login com sucesso ou erro */
-    await authContext.signIn(data.email, data.password);
+    const result = await authContext.signIn(data.email, data.password);
 
-    console.log(data);
+    if (result.error) {
+    }
+
     setIsLoading(false);
   };
 

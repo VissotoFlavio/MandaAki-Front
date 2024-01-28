@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { useAuth } from '../../contexts/auth.context';
 
 const apiInstanseBase = axios.create({
-  baseURL: '',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 apiInstanseBase.interceptors.request.use((config) => {

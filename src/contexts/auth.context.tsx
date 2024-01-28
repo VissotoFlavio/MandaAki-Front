@@ -5,6 +5,7 @@ import { useAPIAuth } from '../hooks/api/useAPIAuth';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { UserTokenData } from '../models/auth/token.model';
 import { UserInfoData } from '../models/auth/user.model';
+import { HttpResultData } from '../services/api/request.models';
 
 export interface AuthContextData {
   signed: boolean;
@@ -12,7 +13,7 @@ export interface AuthContextData {
   token: UserTokenData | null;
   user: UserInfoData | null;
   loading: boolean;
-  signIn(email: string, password: string): Promise<void>;
+  signIn(email: string, password: string): Promise<HttpResultData<UserTokenData>>;
   signOut(): void;
 }
 
@@ -51,23 +52,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
           const newToken = await apiAuth.refreshToken(userToken);
           setUserToken(newToken);
         },
-        (userToken.expire_in - 60 * 1) * 1000,
+        (userToken.expire_in - 60 * 4.7) * 1000,
       );
     }
   }, [userToken]);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (
+    email: string,
+    password: string,
+  ): Promise<HttpResultData<UserTokenData>> => {
     setLoading(true);
     const resToken = await apiAuth.signIn(email, password);
+
     if (resToken) {
       console.log('Token: ', resToken);
-      if (resToken) {
-        setUserToken(resToken);
-        const userInfo = await apiAuth.userInfo(resToken);
+      if (resToken && resToken.success) {
+        setUserToken(resToken.success);
+        const userInfo = await apiAuth.userInfo(resToken.success);
         setUserInfo(userInfo);
       }
     }
-
+    return resToken;
     setLoading(false);
   };
 
