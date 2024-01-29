@@ -11,5 +11,11 @@ export interface MenuDetail {
 }
 
 export interface UserMenuData {
-  itens: MenuDetail[];
+  id: string;
+  link: string;
+  label: string;
+  icon?: keyof typeof icons;
+  count?: number;
+  selected?: boolean;
+  subs?: MenuDetail[];
 }

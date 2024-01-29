@@ -103,7 +103,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
             }
           }
         },
-        (userToken.expire_in - 60 * 4.5) * 1000,
+        (userToken.expire_in - 60 * 1) * 1000,
       );
     }
   };

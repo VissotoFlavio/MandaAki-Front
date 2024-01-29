@@ -33,7 +33,6 @@ export const useAPIAuth = () => {
   const refreshToken = async (token: UserTokenData): Promise<HttpResultData<UserTokenData>> => {
     try {
       const res = await http.post<UserTokenData>(baseUrl + '/refresh-token', { token });
-      console.log(res);
       if (res && res.data) {
         return {
           success: res.data,

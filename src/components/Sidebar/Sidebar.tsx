@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { tv } from 'tailwind-variants';
 import { useAPIUser } from '../../hooks/api/useAPIUser';
-import { MenuDetail } from '../../models/user/menu.model';
+import { UserMenuData } from '../../models/user/menu.model';
 import Button from '../Button';
 import { Icons } from './../Svg';
 import { Highlight } from './Sidebar-Highlight';
@@ -25,7 +25,7 @@ const StyleVariantsStyle = tv({
 const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
   const apiUser = useAPIUser();
 
-  const [menus, setMenus] = useState<MenuDetail[] | null>(null);
+  const [menus, setMenus] = useState<UserMenuData[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isErrorMenu, setIsErrorMenu] = useState(false);
 
@@ -48,10 +48,12 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
     setMenus(null);
     try {
       const res = await apiUser.menus();
-      if (res?.itens) {
-        setMenus(res.itens);
+      if (res.success) {
+        setMenus(res.success);
+        setIsErrorMenu(false);
+      } else {
+        setIsErrorMenu(true);
       }
-      setIsErrorMenu(false);
     } catch (error) {
       console.log(error);
       setIsErrorMenu(true);
