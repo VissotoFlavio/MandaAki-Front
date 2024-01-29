@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { VariantProps, tv } from 'tailwind-variants';
 
 const StyleVariantsStyle = tv({
-  base: 'fixed inset-0 z-30 bg-gray-900/70 transition-opacity opacity-0 duration-500',
+  base: 'fixed inset-0 z-30 bg-gray-900/70 transition-opacity opacity-0 duration-700 sm:hidden',
   variants: {
     show: {
       true: 'opacity-100',

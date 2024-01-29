@@ -1,7 +1,11 @@
 import { UserTokenData } from '../../models/auth/token.model';
 import { UserInfoData } from '../../models/auth/user.model';
 import { http } from '../../services/api/axios.api';
-import { HttpErrorData, HttpResultData } from '../../services/api/request.models';
+import {
+  HttpErrorData,
+  HttpResultData,
+  HttpSuccessWithoutData,
+} from '../../services/api/request.models';
 
 export const useAPIAuth = () => {
   const baseUrl = '/auth';
@@ -14,6 +18,10 @@ export const useAPIAuth = () => {
         return {
           success: res.data,
         };
+      } else {
+        return {
+          error: HttpSuccessWithoutData(),
+        };
       }
     } catch (error) {
       return {
@@ -22,17 +30,25 @@ export const useAPIAuth = () => {
     }
   };
 
-  const refreshToken = async (token: UserTokenData): Promise<UserTokenData | null> => {
-    return new Promise<UserTokenData | null>((resolve) => {
-      setTimeout(() => {
-        resolve({
-          access_token: 'token',
-          expire_in: 300,
-          refresh_token: 'refresh',
-          token_type: 'bearer',
-        });
-      }, 2000);
-    });
+  const refreshToken = async (token: UserTokenData): Promise<HttpResultData<UserTokenData>> => {
+    try {
+      const res = await http.post<UserTokenData>(baseUrl + '/refresh-token', { token });
+      console.log(res);
+      if (res && res.data) {
+        return {
+          success: res.data,
+        };
+      } else {
+        return {
+          error: HttpSuccessWithoutData(),
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      return {
+        error: error as HttpErrorData,
+      };
+    }
   };
 
   const userInfo = async (token: UserTokenData): Promise<UserInfoData | null> => {

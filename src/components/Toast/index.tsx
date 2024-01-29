@@ -60,7 +60,7 @@ export const Toast: FC<ToastProps> = (props: ToastProps): JSX.Element => {
         {props.icon === 'error' && <XCircle className="h-4 w-4" />}
         {props.icon === 'success' && <CheckCircle className="h-4 w-4" />}
       </div>
-      <div className="inline-flex flex-shrink-0 items-center justify-center rounded">
+      <div className="inline-flex items-center justify-center rounded">
         <p className="text-sm font-normal">{props.message}</p>
       </div>
       <button

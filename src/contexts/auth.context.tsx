@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { STORAGE_CONST } from '../constants/storage.constants';
 import { useAPIAuth } from '../hooks/api/useAPIAuth';
@@ -6,6 +6,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import { UserTokenData } from '../models/auth/token.model';
 import { UserInfoData } from '../models/auth/user.model';
 import { HttpResultData } from '../services/api/request.models';
+import { useToast } from './toast.context';
 
 export interface AuthContextData {
   signed: boolean;
@@ -25,11 +26,13 @@ export interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Element => {
   const apiAuth = useAPIAuth();
+  const toast = useToast();
 
   const [userToken, setUserToken] = useLocalStorage<UserTokenData>(STORAGE_CONST.token, null);
   const [userInfo, setUserInfo] = useState<UserInfoData | null>(null);
   const [loading, setLoading] = useState(true);
   const [showWelcome, setShowWelcome] = useState(true);
+  const refreshTokenTimeout = useRef<number>();
 
   useEffect(() => {
     const loadStorageData = async () => {
@@ -46,14 +49,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
 
   useEffect(() => {
     if (userToken) {
-      setTimeout(
-        async () => {
-          console.log('refreshToken', new Date());
-          const newToken = await apiAuth.refreshToken(userToken);
-          setUserToken(newToken);
-        },
-        (userToken.expire_in - 60 * 4.7) * 1000,
-      );
+      refreshToken();
+    } else {
+      clearTimeout(refreshTokenTimeout.current);
     }
   }, [userToken]);
 
@@ -64,22 +62,50 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
     setLoading(true);
     const resToken = await apiAuth.signIn(email, password);
 
-    if (resToken) {
-      if (resToken && resToken.success) {
-        setUserToken(resToken.success);
-        const userInfo = await apiAuth.userInfo(resToken.success);
-        setUserInfo(userInfo);
-      }
+    if (resToken && resToken.success) {
+      setUserToken(resToken.success);
+      const userInfo = await apiAuth.userInfo(resToken.success);
+      setUserInfo(userInfo);
     }
+    setLoading(false);
     return resToken;
+  };
+
+  const signOut = () => {
+    setLoading(true);
+    setUserToken(null);
     setLoading(false);
   };
 
-  const signOut = async () => {
-    setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setUserToken(null);
-    setLoading(false);
+  const refreshToken = () => {
+    if (userToken) {
+      clearTimeout(refreshTokenTimeout.current);
+      refreshTokenTimeout.current = setTimeout(
+        async () => {
+          if (userToken) {
+            try {
+              const newToken = await apiAuth.refreshToken(userToken);
+              if (newToken && newToken.success) {
+                setUserToken(newToken.success);
+              } else {
+                toast.open({
+                  message: 'Sua sessão expirou. Realize o login novamente.',
+                  icon: 'alert',
+                });
+                signOut();
+              }
+            } catch (error) {
+              toast.open({
+                message: 'Sua sessão expirou. Realize o login novamente.',
+                icon: 'alert',
+              });
+              signOut();
+            }
+          }
+        },
+        (userToken.expire_in - 60 * 4.5) * 1000,
+      );
+    }
   };
 
   return (

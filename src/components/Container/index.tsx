@@ -20,8 +20,7 @@ const Container: FC<ContainerProps> = (props): JSX.Element => {
       <Navbar OnClickMenu={handleToggleMenu} />
       <Sidebar showMenu={openMenu} />
       <Content>{props.children}</Content>
-      {}
-      <Backdrop show={openMenu} onClick={handleToggleMenu} />
+      {openMenu && <Backdrop show={openMenu} onClick={handleToggleMenu} />}
     </>
   );
 };

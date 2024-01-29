@@ -22,7 +22,7 @@ export const ToastProvider = ({ children }: { children: JSX.Element }) => {
         {
           id: generateRandomString(),
           message: props.message,
-          timeout: props.timeout,
+          timeout: props.timeout ?? 7000,
           icon: props.icon,
         },
       ];

@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import Checkbox from '../../../components/Checkbox';
 import InputText from '../../../components/InputText';
@@ -12,7 +11,6 @@ import { LoginFormSchema, LoginFormType } from './logins.schema';
 
 export const LoginPage = (): JSX.Element => {
   const authContext = useAuth();
-  const navigation = useNavigation();
   const toast = useToast();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -20,8 +18,8 @@ export const LoginPage = (): JSX.Element => {
   const loginForm = useForm<LoginFormType>({
     resolver: zodResolver(LoginFormSchema),
     values: {
-      email: 'vissoto_flavio@hotmail.com',
-      password: '123456a',
+      email: 'teste@teste.com',
+      password: 'segredo',
       rememberpass: true,
     },
   });
@@ -35,18 +33,7 @@ export const LoginPage = (): JSX.Element => {
     if (result.error) {
       toast.open({
         message: result.error.message,
-        icon: 'success',
-        timeout: 5000000,
-      });
-      toast.open({
-        message: result.error.message,
         icon: 'error',
-        timeout: 5000000,
-      });
-      toast.open({
-        message: result.error.message,
-        icon: 'alert',
-        timeout: 5000000,
       });
     }
 

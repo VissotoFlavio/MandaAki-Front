@@ -13,7 +13,7 @@ export interface SidebarProps {
 }
 
 const StyleVariantsStyle = tv({
-  base: 'fixed left-0 top-0 z-40 h-screen w-64 pt-14 transition-transform sm:translate-x-0',
+  base: 'fixed left-0 top-0 z-40 h-screen w-64 pt-14 transition-transform sm:translate-x-0 duration-500',
   variants: {
     show: {
       true: '-translate-x-0',

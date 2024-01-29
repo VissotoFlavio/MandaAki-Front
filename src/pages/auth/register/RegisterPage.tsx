@@ -53,7 +53,7 @@ export const RegisterPage = (): JSX.Element => {
                 <Button label="Cadastrar" />
               </div>
               <p className="text-sm font-light text-gray-500">
-                Já tem uma conta? <Link label="Faça o login" href="/login" />
+                Já tem uma conta? <Link href="/login">Faça o Login</Link>
               </p>
             </div>
           </div>
