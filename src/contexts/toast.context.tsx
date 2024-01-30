@@ -1,7 +1,8 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Toast, ToastProps } from '../components/Toast';
-import { generateRandomString } from '../utils/random-string.utils.';
+import { generateRandomString } from '../utils/random-string.utils';
+
 
 interface ToastPropsProvider extends ToastProps {
   id: string;
