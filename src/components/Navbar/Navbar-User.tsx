@@ -6,13 +6,20 @@ import { Link } from '../Link';
 interface RenderProps {
   href: string;
   label: string;
+  onClick?: () => void;
 }
 const renderItemLink: FC<RenderProps> = (props: RenderProps): JSX.Element => {
+  const handlerClick = () => {
+    if (props.onClick) {
+      props.onClick();
+    }
+  };
   return (
     <li>
       <Link
         href={props.href}
-        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+        onClick={handlerClick}>
         {props.label}
       </Link>
     </li>
@@ -64,14 +71,17 @@ export const NavbarUser = (): JSX.Element => {
             {renderItemLink({
               href: '/',
               label: 'Dashboard',
+              onClick: handleButtonUser,
             })}
             {renderItemLink({
               href: '/perfil',
               label: 'Perfil',
+              onClick: handleButtonUser,
             })}
             {renderItemLink({
               href: '/logout',
               label: 'Sair',
+              onClick: handleButtonUser,
             })}
           </ul>
         </div>
