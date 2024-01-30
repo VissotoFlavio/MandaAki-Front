@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { generateRandomString } from '../utils/randomString';
+import { generateRandomString } from '../utils/random-string.utils.';
 
 export const useRandomString = (length: number): string => {
   const [randomString, setRandomString] = useState<string>('');

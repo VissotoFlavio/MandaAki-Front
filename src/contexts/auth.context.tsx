@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
     const loadStorageData = async () => {
       setLoading(true);
       if (userToken) {
-        const userInfo = await apiAuth.userInfo(userToken);
+        // const userInfo = await apiAuth.userInfo(userToken);
         setUserInfo(userInfo);
       }
       setLoading(false);
