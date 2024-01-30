@@ -1,7 +1,7 @@
 import { ChangeEvent, ChangeEventHandler, FC, InputHTMLAttributes, forwardRef } from 'react';
 import { useRandomString } from '../../hooks/useRandomString';
-import { CpfMask } from '../../utils/masks/cpf.mask';
-import { PhoneLangType, PhoneMask } from '../../utils/masks/phone.mask';
+import { CpfMask } from './../../utils/masks/cpf.mask';
+import { PhoneLangType, PhoneMask } from './../../utils/masks/phone.mask';
 
 export type InputTextType =
   | 'email'
