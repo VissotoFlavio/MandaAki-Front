@@ -23,6 +23,8 @@ const StyleVariantsStyle = tv({
 });
 
 const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
+  const idSidebarApp = 'IdSidebarApp';
+
   const apiUser = useAPIUser();
 
   const [menus, setMenus] = useState<UserMenuData[] | null>(null);
@@ -65,8 +67,6 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
     setIsErrorMenu(false);
     getMenu();
   };
-
-  const idSidebarApp = 'IdSidebarApp';
 
   return (
     <aside

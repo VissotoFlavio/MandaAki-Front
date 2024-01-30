@@ -5,7 +5,7 @@ export interface ContainerProps {
 }
 
 const Content: FC<ContainerProps> = (props): JSX.Element => {
-  return <div className="mt-14 p-4 sm:ml-64">{props.children}</div>;
+  return <div className="h-screen flex-1 bg-gray-100 p-4 pt-14 sm:ml-64">{props.children}</div>;
 };
 
 export default Content;

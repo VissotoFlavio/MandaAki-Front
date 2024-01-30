@@ -6,6 +6,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import { UserTokenData } from '../models/auth/token.model';
 import { UserInfoData } from '../models/auth/user.model';
 import { HttpResultData } from '../services/api/request.models';
+import { diffEmMilissegundos } from '../services/data.service';
 import { useToast } from './toast.context';
 
 export interface AuthContextData {
@@ -64,7 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
 
     if (resToken && resToken.success) {
       setUserToken(resToken.success);
-      const userInfo = await apiAuth.userInfo(resToken.success);
+      // const userInfo = await apiAuth.userInfo(resToken.success);
       setUserInfo(userInfo);
     }
     setLoading(false);
@@ -80,32 +81,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
   const refreshToken = () => {
     if (userToken) {
       clearTimeout(refreshTokenTimeout.current);
-      refreshTokenTimeout.current = setTimeout(
-        async () => {
-          if (userToken) {
-            try {
-              const newToken = await apiAuth.refreshToken(userToken);
-              if (newToken && newToken.success) {
-                setUserToken(newToken.success);
-              } else {
-                toast.open({
-                  message: 'Sua sessão expirou. Realize o login novamente.',
-                  icon: 'alert',
-                });
-                signOut();
-              }
-            } catch (error) {
+      refreshTokenTimeout.current = setTimeout(async () => {
+        if (userToken) {
+          try {
+            const response = await apiAuth.refreshToken();
+            if (response && response.success) {
+              setUserToken(response.success);
+            } else {
               toast.open({
                 message: 'Sua sessão expirou. Realize o login novamente.',
                 icon: 'alert',
               });
               signOut();
             }
+          } catch (error) {
+            toast.open({
+              message: 'Sua sessão expirou. Realize o login novamente.',
+              icon: 'alert',
+            });
+            signOut();
           }
-        },
-        (userToken.expire_in - 60 * 1) * 1000,
-      );
+        }
+      }, getTimeRefreshToken(userToken));
     }
+  };
+
+  const getTimeRefreshToken = (token: UserTokenData): number => {
+    if (token.expire_in === 0 || !token.updated) {
+      return 0;
+    }
+    const dateRefesh = new Date(new Date().setSeconds(token.expire_in - 60));
+    const result = diffEmMilissegundos(token.updated, dateRefesh);
+    return result > 0 ? result : 0;
   };
 
   return (

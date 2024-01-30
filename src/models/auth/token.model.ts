@@ -3,4 +3,5 @@ export interface UserTokenData {
   token_type: string;
   expire_in: number;
   refresh_token: string;
+  updated: Date;
 }

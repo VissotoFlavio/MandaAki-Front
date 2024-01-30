@@ -3,7 +3,7 @@ import { Link as LinkDom } from 'react-router-dom';
 import { useRandomString } from '../../hooks/useRandomString';
 
 export interface LinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'class' | 'href'> {
-  children: ReactNode;
+  children?: ReactNode;
   href: string;
 }
 
