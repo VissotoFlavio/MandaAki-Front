@@ -65,7 +65,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props): React.JSX.Elem
 
     if (resToken && resToken.success) {
       setUserToken(resToken.success);
-      // const userInfo = await apiAuth.userInfo(resToken.success);
+      const userInfo = await apiAuth.userInfo();
+      console.log(userInfo);
       setUserInfo(userInfo);
     }
     setLoading(false);

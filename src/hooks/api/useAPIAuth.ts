@@ -8,13 +8,17 @@ import {
   HttpSuccessWithoutData,
 } from '../../services/api/request.models';
 import { GetLocalStorage } from '../../services/localStorage.service';
+import { encryptClientSide } from '../../services/security.service';
 
 export const useAPIAuth = () => {
   const baseUrl = '/auth';
 
   const signIn = async (user: string, pass: string): Promise<HttpResultData<UserTokenData>> => {
     try {
-      const res = await http.post<UserTokenData>(baseUrl + '/signIn', { login: user, pass });
+      const res = await http.post<UserTokenData>(baseUrl + '/signIn', {
+        login: user,
+        pass: encryptClientSide(pass),
+      });
 
       if (res && res.data) {
         res.data.updated = new Date();
