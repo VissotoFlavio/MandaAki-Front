@@ -2,6 +2,7 @@ import { FC, JSX, useState } from 'react';
 import { useAuth } from '../../contexts/auth.context';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { Link } from '../Link';
+import { Icons } from '../Svg';
 
 interface RenderProps {
   href: string;
@@ -45,7 +46,11 @@ export const NavbarUser = (): JSX.Element => {
             className="flex rounded-full bg-gray-800 text-sm"
             onClick={handleButtonUser}>
             <span className="sr-only">Abrir menu do usuário</span>
-            <img className="h-8 w-8 rounded-full" src={apiAuth.user?.img} alt="user photo" />
+            {apiAuth.user ? (
+              <img className="h-8 w-8 rounded-full" src={apiAuth.user.img} alt="user photo" />
+            ) : (
+              <Icons.Loading className="h-8 w-8" />
+            )}
           </button>
         </div>
         <div

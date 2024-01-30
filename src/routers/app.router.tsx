@@ -1,5 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { App } from '../App';
+import { AdminSistemaPage } from '../pages/app/admin/sistema/sistema.page';
+import { AdminUsuariosPage } from '../pages/app/admin/usuarios/usuario.page';
 import { AjudaPage } from '../pages/app/ajuda/cadastrar.page';
 import { DestinatarioCadastrarPage } from '../pages/app/destinatario/cadastrar/cadastrar.page';
 import { DestinatarioListarPage } from '../pages/app/destinatario/listar/listar.page';
@@ -60,6 +62,19 @@ const router = createBrowserRouter([
       {
         path: '/logout',
         element: <LogoutPage />,
+      },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'usuarios',
+            element: <AdminUsuariosPage />,
+          },
+          {
+            path: 'sistema',
+            element: <AdminSistemaPage />,
+          },
+        ],
       },
       {
         path: '*',
